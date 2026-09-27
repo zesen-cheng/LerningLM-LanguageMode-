@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+_verification/
+*.diff
+VERIFICATION*.txt
+ROLLBACK*.sh
