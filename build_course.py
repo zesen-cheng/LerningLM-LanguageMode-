@@ -61,7 +61,7 @@ def write_new_or_identical(path: Path, content: str, force: bool = False) -> Non
 def build(force: bool = False) -> None:
     lessons = read_lessons()
     demos = read_demos()
-    index = ["# 从零训练语言模型：逐课索引", "", "每课都有独立撰写的 `notes.md` 与可运行的 `demo.py`；每个主题末尾都设有解答与复习时间。"]
+    index = ["# 从零训练语言模型：逐课索引", "", "每课都有独立撰写的 `notes.md` 与可运行的 `demo.py`；每个主题末尾都设有解答与复习时间。", "", "先读[项目复盘与学习价值](TRAINING_STORY.md)，了解为什么训练这个模型、实际技术流程以及能迁移的方法。"]
     ranges = [
         (0, 14, "基础知识与 GPT", "01_foundations.md", "token 是切分后的单位；tokenizer 是编码规则。32K 词表不等于 32K 上下文。"),
         (15, 22, "预训练", "02_pretraining.md", "step 是一次参数更新；checkpoint 保存可恢复状态；KV cache 用于推理复用。"),

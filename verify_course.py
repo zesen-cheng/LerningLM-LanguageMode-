@@ -27,7 +27,7 @@ def main() -> int:
             failures.append(f"missing self-test: {review.name}")
         if f"reviews/{review.name}" not in index:
             failures.append(f"unlinked review: {review.name}")
-    for document in [root / "README.md", root / "course_plan.md", *reviews, *root.glob("[0-9][0-9]_*/notes.md")]:
+    for document in [*root.glob("*.md"), *reviews, *root.glob("[0-9][0-9]_*/notes.md")]:
         document_text = document.read_text(encoding="utf-8")
         if "modern-ai-course" in document_text:
             failures.append(f"legacy reference: {document.name}")

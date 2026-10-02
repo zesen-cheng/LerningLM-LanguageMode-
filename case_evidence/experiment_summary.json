@@ -1,0 +1,78 @@
+{
+  "evidence_cutoff": "2026-09-26",
+  "article_updated": "2026-10-02",
+  "scope": "Local course experiment summary, not a public general capability benchmark",
+  "model": {
+    "parameter_count": 195075840,
+    "vocab_size": 32768,
+    "context_length": 1024,
+    "hidden_size": 768,
+    "layers": 24,
+    "query_heads": 12,
+    "kv_heads": 6,
+    "ffn_hidden_size": 2304,
+    "tied_embeddings": true,
+    "components": ["causal attention", "grouped query projections", "RoPE", "RMSNorm", "SiLU gated FFN"]
+  },
+  "data": {
+    "cci4_scored_documents": 3036419,
+    "high_score_pool_tokens_including_validation": 2214654571,
+    "selected_training_manifest_tokens": 1999984673,
+    "validation_tokens": 22234771,
+    "target_10b_pool_verified": false,
+    "quality_limits": ["Cross-split near-duplicate checks were sampled", "Domain labels were rule-based proxies", "Human-dialogue origin and comprehensive coverage were not established"]
+  },
+  "tokenizer": {
+    "type": "ByteLevel BPE",
+    "training_characters": 100646880,
+    "vocab_size": 32768,
+    "fixed_roundtrip_cases_passed": 6,
+    "token_reduction_against_16k_in_acceptance_comparison_percent": 19.45
+  },
+  "pretraining": {
+    "micro_batch_size": 2,
+    "gradient_accumulation_steps": 8,
+    "positions_per_update": 16384,
+    "completed_steps": 122067,
+    "processed_positions": 1999945728,
+    "optimizer": "AdamW",
+    "autocast_dtype": "BF16",
+    "warmup_steps": 2000,
+    "peak_learning_rate": 0.0003,
+    "minimum_learning_rate": 0.00003,
+    "grad_clip": 1.0,
+    "evaluation_and_checkpoint_interval": 500,
+    "full_rng_state_saved": false
+  },
+  "base_evaluation": {
+    "fixed_validation_blocks": 256,
+    "tokens_per_block": 1024,
+    "loss_at_step_60000": 3.6746,
+    "final_loss": 3.3843,
+    "final_perplexity": 29.50,
+    "greedy_degeneration_flags": {"count": 10, "total": 10},
+    "controlled_sampling_degeneration_flags": {"count": 1, "total": 10},
+    "general_chat_acceptance_passed": false
+  },
+  "final_sft_comparison": {
+    "steps_per_arm": 30,
+    "arms": ["ordinary SFT", "SFT with fixed-reference KL retention"],
+    "v2_automatic_dialogue_scores_out_of_80": {"starting_model": 42, "ordinary_sft": 42, "kl_retention": 39},
+    "new_semantic_test_scores_out_of_12": {"starting_model": 4, "ordinary_sft": 4, "kl_retention": 4},
+    "candidate_promoted": false,
+    "dpo_executed_in_this_final_stage": false,
+    "rl_executed_in_this_final_stage": false
+  },
+  "sources": [
+    {"path": "gpt02b_lab/src/model_gpt.py", "sha256": "5d41432328bfc6de275efd27c3d25f11ea0f49dfbf5e84a96fea112e36e4f9ec"},
+    {"path": "gpt02b_lab/scripts/train_gpt_manifest.py", "sha256": "561b988b5587c987c9c02ee6cb62be2d663b22b1f3e709adf900df92f7ef3c2e"},
+    {"path": "gpt02b_lab/outputs/runs/gpt_0p2b_32k_pretrain_2b_v1/config.json", "sha256": "d474e8041cc70b1d353f61d620ee1fcef9523713ed455daa96cecd75f2e889f9"},
+    {"path": "gpt02b_lab/outputs/runs/gpt_0p2b_32k_pretrain_2b_v1/status.json", "sha256": "16f3650db006e44bd0f3503b8a3edb00412caedb198f2ada5f15e44acf4e4b34"},
+    {"path": "gpt02b_lab/data_scaleup/train_subsets/pretrain_2b_clean_manifest.json", "sha256": "ff2d4d8e2aff75ab59570cd2441d8a0d19e25c69051ebd9732e5ef84a98a46e6"},
+    {"path": "gpt02b_lab/evaluations/gpt_0p2b_32k_pretrain_2b_v1_final/ASSESSMENT.md", "sha256": "a69e9e2f912523f0d4c9edaa78aa6a4a02c504e0d692ec00a1d94bcdde2a6172"},
+    {"path": "gpt02b_lab/data_scaleup/quality_audit/final_2b_clean_acceptance_report.md", "sha256": "5c2b13915adf1e54724370be2ab87131f1b988d911a59f7ffc1886dcdc263356"},
+    {"path": "gpt02b_lab/data_scaleup/tokenizer_32k/tokenizer_report.md", "sha256": "84ea9367724ba446da640c16d9bb7c6f9c7890b10fab96cf0954982239416cdd"},
+    {"path": "gpt02b_lab/evaluations/stage6_v1/ASSESSMENT.md", "sha256": "9242405f2287e7e97476c70f9c20458ccdd088ff4b9980487b90c6086b00a252"},
+    {"path": "gpt02b_lab/COURSE_SCALEUP_EXECUTION_PLAN.md", "sha256": "bd06a2c1bdd15556713a62dc50dc2d2d3b9afafe2ea4acd2b55b80308c32c4a7"}
+  ]
+}
