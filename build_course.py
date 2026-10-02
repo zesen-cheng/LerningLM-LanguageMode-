@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 from lesson_content import LESSONS
+from lesson_details import TECHNICAL_DETAILS, render_technical_details
 
 
 ROOT = Path(__file__).resolve().parent
@@ -32,6 +33,17 @@ def read_lessons() -> dict[int, tuple[str, str, str, str, str]]:
     if len(LESSONS) != 48:
         raise ValueError(f"expected 48 lessons, found {len(LESSONS)}")
     return dict(enumerate(LESSONS))
+
+
+def read_technical_details() -> dict[int, tuple[str, str, str]]:
+    if set(TECHNICAL_DETAILS) != set(range(48)):
+        raise ValueError("technical detail IDs must cover lessons 00–47 exactly")
+    for number, parts in TECHNICAL_DETAILS.items():
+        if not isinstance(parts, tuple) or len(parts) != 3 or not all(
+            isinstance(part, str) and part.strip() for part in parts
+        ):
+            raise ValueError(f"invalid technical details for lesson {number:02d}")
+    return TECHNICAL_DETAILS
 
 
 def read_demos() -> dict[int, str]:
@@ -60,8 +72,9 @@ def write_new_or_identical(path: Path, content: str, force: bool = False) -> Non
 
 def build(force: bool = False) -> None:
     lessons = read_lessons()
+    details = read_technical_details()
     demos = read_demos()
-    index = ["# 从零训练语言模型：逐课索引", "", "每课都有独立撰写的 `notes.md` 与可运行的 `demo.py`；每个主题末尾都设有解答与复习时间。", "", "先读[项目复盘与学习价值](TRAINING_STORY.md)，了解为什么训练这个模型、实际技术流程以及能迁移的方法。"]
+    index = ["# 从零训练语言模型：逐课索引", "", "每课都有独立撰写的 `notes.md` 与可运行的 `demo.py`，并补充技术机制、实践步骤、检查与常见错误；每个主题末尾都设有解答与复习时间。", "", "先读[项目复盘与学习价值](TRAINING_STORY.md)，了解为什么训练这个模型、实际技术流程以及能迁移的方法。"]
     ranges = [
         (0, 14, "基础知识与 GPT", "01_foundations.md", "token 是切分后的单位；tokenizer 是编码规则。32K 词表不等于 32K 上下文。"),
         (15, 22, "预训练", "02_pretraining.md", "step 是一次参数更新；checkpoint 保存可恢复状态；KV cache 用于推理复用。"),
@@ -86,6 +99,7 @@ def build(force: bool = False) -> None:
             f"# {number:02d}｜{title}\n\n"
             f"## 核心概念\n\n{concept}\n\n"
             f"## 观察一个例子\n\n{example}\n\n"
+            f"{render_technical_details(number)}"
             f"## 自问自答\n\n**问：{question}**\n\n答：{answer}\n\n"
             f"## 代码演示\n\n在本目录运行 `python demo.py`。演示只用 Python 标准库；"
             f"玩具实验用于解释机制，不代表真实 0.2B 模型成绩。\n\n"
@@ -99,7 +113,7 @@ def build(force: bool = False) -> None:
         write_new_or_identical(directory / "notes.md", notes, force=force)
         write_new_or_identical(directory / "demo.py", demo, force=force)
     write_new_or_identical(ROOT / "course_plan.md", "\n".join(index).rstrip() + "\n", force=force)
-    print("generated=48 notes=48 demos=48 reviews=6")
+    print(f"generated=48 notes=48 demos=48 technical_details={len(details)} reviews=6")
 
 
 if __name__ == "__main__":
